@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
     const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || "Job Openings";
 
-    const formula = encodeURIComponent("{Status}='Open'");
+    const formula = encodeURIComponent("{Search Lifecycle Status}='Active'");
     const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}?filterByFormula=${formula}&sort[0][field]=Posted%20Date&sort[0][direction]=desc`;
 
     const airtableRes = await fetch(url, {
