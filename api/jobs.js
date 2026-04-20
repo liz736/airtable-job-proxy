@@ -5,8 +5,7 @@ export default async function handler(req, res) {
     const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || "Job Openings";
 
     const filterFormula = "AND({Visibility}='Public', {Search Lifecycle Status}='Active')";
-    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}?filterByFormula=${encodeURIComponent(filterFormula)}&sort[0][field]=Posted%20Date&sort[0][direction]=desc`;
-
+    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
     const airtableRes = await fetch(url, {
       headers: {
         Authorization: `Bearer ${AIRTABLE_TOKEN}`
