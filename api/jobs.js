@@ -4,8 +4,14 @@ export default async function handler(req, res) {
     const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
     const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || "Job Openings";
 
-    const filterFormula = "AND({Visibility}='Public', {Search Lifecycle Status}='Active')";
-    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
+    const filterFormula = "AND({Visibility}='Public',{Search Lifecycle Status}='Active')";
+
+    const url =
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}` +
+      `?filterByFormula=${encodeURIComponent(filterFormula)}` +
+      `&sort[0][field]=Posted%20Date` +
+      `&sort[0][direction]=desc`;
+
     const airtableRes = await fetch(url, {
       headers: {
         Authorization: `Bearer ${AIRTABLE_TOKEN}`
@@ -21,12 +27,12 @@ export default async function handler(req, res) {
 
     const jobs = (data.records || []).map((record) => ({
       title: record.fields["Job Title"] || "",
-      client: record.fields["Client"] || "",
+      client: record.fields["School/Center"] || record.fields["Client"] || "",
       location: record.fields["Location"] || "",
       employmentType: record.fields["Employment Type"] || "",
       payRange: record.fields["Pay Range"] || "",
-      description: record.fields["Short Description"] || record.fields["Description"] || "",
-      fullDescription: record.fields["Description"] || "",
+      description: record.fields["Short Description"] || record.fields["Job Description"] || record.fields["Description"] || "",
+      fullDescription: record.fields["Description"] || record.fields["Job Description"] || "",
       applyUrl: record.fields["Apply URL"] || "",
       postedDate: record.fields["Posted Date"] || ""
     }));
