@@ -26,19 +26,27 @@ export default async function handler(req, res) {
 
     const jobs = (data.records || []).map((record) => ({
       title: record.fields["Job Title"] || "",
-      client: record.fields["School/Center"] || record.fields["Client"] || "",
+
+      // Public-facing organization label.
+      // Do NOT expose School/Center on the website.
+      organizationType: record.fields["Organization Type"] || "",
+      client: record.fields["Organization Type"] || "",
+
       location: record.fields["Location"] || "",
       employmentType: record.fields["Employment Type"] || "",
       payRange: record.fields["Pay Range"] || "",
+
       description:
         record.fields["Short Description"] ||
         record.fields["Job Description"] ||
         record.fields["Description"] ||
         "",
+
       fullDescription:
         record.fields["Description"] ||
         record.fields["Job Description"] ||
         "",
+
       applyUrl: record.fields["Apply URL"] || "",
       postedDate: record.fields["Posted Date"] || ""
     }));
